@@ -6,8 +6,32 @@ import "./visualDatabase.css";
 function VisualDatabase() {
     const [editIndex, setEditIndex] = useState(null);
     const [contactsDatabase, setContactsDatabase] = useState([]);
-    const handleSave = () => {
-        setEditIndex(null);
+    const [editPerson, setEditPerson] = useState({});
+
+    const handleSave = (index) => {
+        axios
+        .post('http://localhost:5000/editPerson', { index, person: editPerson })
+        .then(() => {
+            setEditPerson({});        
+            setEditIndex(null);
+
+        })
+        .catch((error) => {
+            console.error('Error updating contact:', error);
+            setEditIndex(null);
+        });
+    };
+
+    const handleEdit = (index, person) => {
+        setEditIndex(index);
+        setEditPerson(person);
+    };
+
+    const handleInputChange = (e, field) => {
+        setEditPerson({
+            ...editPerson,
+            [field]: e.target.value,
+        });
     };
 
     useEffect(() => {
@@ -19,7 +43,7 @@ function VisualDatabase() {
           .catch((error) => {
             console.error('Error fetching contacts:', error);
           });
-      }, []);
+      }, [editIndex]);
 
     return (  
         <>
@@ -45,25 +69,25 @@ function VisualDatabase() {
                             <td>{person.email}</td>
                             <td>{person.category}</td>
                             <td>
-                                <button onClick={() => setEditIndex(index)}>Edit</button>
+                                <button onClick={() => handleEdit(index, person)}>Edit</button>
                             </td>
                             </>
                         ) : (
                             <>
                             <td>
-                                <textarea value={person.name}></textarea>
+                                <textarea value={editPerson.name} onChange={(e) => handleInputChange(e, 'name')}></textarea>
                             </td>
                             <td>
-                                <textarea value={person.address}></textarea>
+                                <textarea value={editPerson.address} onChange={(e) => handleInputChange(e, 'address')}></textarea>
                             </td>
                             <td>
-                                <textarea value={person.phone_number}></textarea>
+                                <textarea value={editPerson.phone_number} onChange={(e) => handleInputChange(e, 'phone_number')}></textarea>
                             </td>
                             <td>
-                                <textarea value={person.email}></textarea>
+                                <textarea value={editPerson.email} onChange={(e) => handleInputChange(e, 'email')}></textarea>
                             </td>
                             <td>
-                                <textarea value={person.category}></textarea>
+                                <textarea value={editPerson.category} onChange={(e) => handleInputChange(e, 'category')}></textarea>
                             </td>
                             <td>
                                 <button onClick={() => handleSave(index)}>Save</button>

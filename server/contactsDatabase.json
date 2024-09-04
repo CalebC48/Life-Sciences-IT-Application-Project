@@ -1,9 +1,9 @@
 [
-    {
-      "name": "John Doe(Test)",
-      "address": "123 Test St, Testing, UT 84604",
-      "phone_number": "801-123-4567",
-      "email": "johndoe@example.com",
-      "category": "Personal"
-    }
+  {
+    "name": "John Doe(Test)",
+    "address": "123 Test St, Testing, UT 84604",
+    "phone_number": "801-123-4567",
+    "email": "johndoe@example.com",
+    "category": "Personal"
+  }
 ]
