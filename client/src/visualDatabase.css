@@ -1,0 +1,8 @@
+.contactsTable{
+    margin: 0 auto;
+}
+
+th, td{
+     border: 1px solid #ccc;
+     padding: '8px';
+}
