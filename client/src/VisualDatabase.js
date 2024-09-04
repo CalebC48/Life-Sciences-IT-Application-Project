@@ -1,13 +1,25 @@
-import React, {useState} from 'react';
-import contactsDatabase from './/contactsDatabase.json';
+import React, {useState, useEffect} from 'react';
+// import contactsDatabase from './/contactsDatabase.json';
+import axios from 'axios';
 import "./visualDatabase.css";
 
 function VisualDatabase() {
     const [editIndex, setEditIndex] = useState(null);
-
+    const [contactsDatabase, setContactsDatabase] = useState([]);
     const handleSave = () => {
         setEditIndex(null);
     };
+
+    useEffect(() => {
+        axios
+          .get('http://localhost:5000/contacts')
+          .then((response) => {
+            setContactsDatabase(response.data); 
+          })
+          .catch((error) => {
+            console.error('Error fetching contacts:', error);
+          });
+      }, []);
 
     return (  
         <>
