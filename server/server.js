@@ -36,3 +36,38 @@ app.post('/editPerson', (req, res) => {
         res.status(400).json({ message: 'Invalid index.' });
     }
 });
+
+app.post('/addPerson', (req, res) => {
+    const newPerson = req.body;
+
+    contactsDatabase.push(newPerson);
+
+    fs.writeFile(contactsFilePath, JSON.stringify(contactsDatabase, null, 2), (err) => {
+        if (err) {
+            console.error('Error writing to file:', err);
+            res.status(500).json({ message: 'Failed to add contact.' });
+        } else {
+            res.json(contactsDatabase);
+        }
+    });
+});
+
+app.post('/deletePerson', (req, res) => {
+    const {index} = req.body;
+
+    if (index >= 0 && index < contactsDatabase.length) {
+    contactsDatabase.splice(index, 1);
+
+    fs.writeFile(contactsFilePath, JSON.stringify(contactsDatabase, null, 2), (err) => {
+        if (err) {
+            console.error('Error writing to file:', err);
+            res.status(500).json({ message: 'Failed to delete contact.' });
+        } else {
+            res.json(contactsDatabase);
+        }
+    });
+
+    } else {
+        res.status(400).json({ message: 'Invalid index.' });
+    }
+});
